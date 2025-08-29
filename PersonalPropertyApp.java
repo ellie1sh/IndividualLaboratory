@@ -27,8 +27,8 @@ public class PersonalPropertyApp {
     public static void main(String[] args) {
         MyFixedSizeArrayList<PersonalProperty> propertyList = new MyFixedSizeArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Personal Property Manager ===");
-        System.out.println("(Fixed size list - maximum 5 items)");
+        System.out.println(ConsoleUI.title("Personal Property Manager"));
+        System.out.println(ConsoleUI.info("Fixed size list - maximum 5 items"));
 
         while (true) {
             System.out.println("\n1. Add Property");
@@ -52,15 +52,15 @@ public class PersonalPropertyApp {
                         String status = scanner.nextLine();
                         PersonalProperty property = new PersonalProperty(name, model, color, status);
                         propertyList.insert(property);
-                        System.out.println("Property added successfully!");
+                        System.out.println(ConsoleUI.success("Property added successfully"));
                     } catch (ListOverflowException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        System.out.println(ConsoleUI.warn("Error: " + e.getMessage()));
                     }
                     break;
                 case 2:
-                    System.out.println("\nYour Properties:");
-                    propertyList.display();
-                    System.out.println("Total items: " + propertyList.getSize());
+                    System.out.println(ConsoleUI.section("Your Properties"));
+                    System.out.println(propertyList.toString());
+                    System.out.println(ConsoleUI.info("Total items: " + propertyList.getSize()));
                     break;
                 case 3:
                     System.out.print("Enter property name to search: ");
@@ -70,9 +70,9 @@ public class PersonalPropertyApp {
                     PersonalProperty searchProperty = new PersonalProperty(searchName, searchModel, "", "");
                     int index = propertyList.search(searchProperty);
                     if (index != -1) {
-                        System.out.println("Found at position " + index);
+                        System.out.println(ConsoleUI.success("Found at position " + index));
                     } else {
-                        System.out.println("Property not found.");
+                        System.out.println(ConsoleUI.warn("Property not found"));
                     }
                     break;
                 case 4:
@@ -83,17 +83,17 @@ public class PersonalPropertyApp {
                     String deleteModel = scanner.nextLine();
                     PersonalProperty deleteProperty = new PersonalProperty(deleteName, deleteModel, "", "");
                     if (propertyList.delete(deleteProperty)) {
-                        System.out.println("Property deleted successfully!");
+                        System.out.println(ConsoleUI.success("Property deleted successfully"));
                     } else {
-                        System.out.println("Property not found.");
+                        System.out.println(ConsoleUI.warn("Property not found"));
                     }
                     break;
                 case 5:
-                    System.out.println("Goodbye!");
+                    System.out.println(ConsoleUI.info("Goodbye!"));
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid option!");
+                    System.out.println(ConsoleUI.warn("Invalid option"));
             }
         }
     }

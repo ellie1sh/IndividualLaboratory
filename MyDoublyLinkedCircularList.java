@@ -13,7 +13,7 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         return size;
     }
     @Override
-    public void insert(E data) throws ListOverflowException {
+    public void insert(E data) {
         DoublyLinkedNode<E> newNode = new DoublyLinkedNode<>(data);
         if (head == null) {
 // First node - points to itself
@@ -89,18 +89,23 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         return -1;
     }
     public void display() {
-        if (head == null) {
-            System.out.println("List contents: []");
-            return;
-        }
+        System.out.println(toString());
+    }
 
-        System.out.print("List contents: [");
+    @Override
+    public String toString() {
+        if (head == null) {
+            return "List contents: []";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
         DoublyLinkedNode<E> current = head;
         do {
-            System.out.print(current.getData());
+            sb.append(current.getData());
             current = current.getNext();
-            if (current != head) System.out.print(", ");
+            if (current != head) sb.append(", ");
         } while (current != head);
-        System.out.println("]");
+        sb.append("]");
+        return sb.toString();
     }
 }

@@ -69,11 +69,18 @@ public class MyGrowingArrayList<E> implements MyList<E> {
         return -1;
     }
     public void display() {
-        System.out.print("List contents: [");
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
         for (int i = 0; i < size; i++) {
-            System.out.print(array[i]);
-            if (i < size - 1) System.out.print(", ");
+            sb.append(array[i]);
+            if (i < size - 1) sb.append(", ");
         }
-        System.out.println("] (Capacity: " + capacity + ")");
+        sb.append("] (Capacity: ").append(capacity).append(")");
+        return sb.toString();
     }
 }

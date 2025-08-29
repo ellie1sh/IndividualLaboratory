@@ -9,22 +9,27 @@ class DoublyLinkedNode<E> {
         this.previous = null;
     }
 
+    /** Returns the data payload stored in this node. */
     public E getData() {
         return data;
     }
 
+    /** Sets the node that follows this one. */
     public void setNext(DoublyLinkedNode<E> next) {
         this.next = next;
     }
 
+    /** Returns the node that follows this one, or null. */
     public DoublyLinkedNode<E> getNext() {
         return next;
     }
 
+    /** Sets the node that precedes this one. */
     public void setPrevious(DoublyLinkedNode<E> previous) {
         this.previous = previous;
     }
 
+    /** Returns the node that precedes this one, or null. */
     public DoublyLinkedNode<E> getPrevious() {
         return previous;
     }
