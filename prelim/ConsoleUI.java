@@ -25,6 +25,22 @@ public final class ConsoleUI {
         return "[!] " + text;
     }
 
+    public static String error(String text) {
+        return "[ERROR] " + text;
+    }
+
+    public static String debug(String text) {
+        return "[DEBUG] " + text;
+    }
+
+    public static String prompt(String text) {
+        return ">> " + text;
+    }
+
+    public static String validation(String text) {
+        return "[VALIDATION] " + text;
+    }
+
     public static String repeat(String s, int n) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) sb.append(s);

@@ -37,25 +37,19 @@ public class TaskManagerApp {
             System.out.println("3. Search Task");
             System.out.println("4. Delete Task");
             System.out.println("5. Exit");
-            System.out.print("Choose option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            int choice = InputValidator.getValidMenuChoice(scanner, 1, 5);
             switch (choice) {
                 case 1:
                     try {
-                        System.out.print("Enter project name: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Enter date assigned (MM/DD/YYYY): ");
-                        String assigned = scanner.nextLine();
-                        System.out.print("Enter date submitted (MM/DD/YYYY): ");
-                        String submitted = scanner.nextLine();
-                        System.out.print("Enter status (Completed/Pending): ");
-                        String status = scanner.nextLine();
+                        String name = InputValidator.getValidString(scanner, "Enter project name: ", "Project name");
+                        String assigned = InputValidator.getValidDate(scanner, "Enter date assigned (MM/DD/YYYY): ");
+                        String submitted = InputValidator.getValidDate(scanner, "Enter date submitted (MM/DD/YYYY): ");
+                        String status = InputValidator.getValidStatus(scanner, "Enter status");
                         Task task = new Task(name, assigned, submitted, status);
                         taskList.insert(task);
                         System.out.println(ConsoleUI.success("Task added successfully"));
                     } catch (ListOverflowException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        System.out.println(ConsoleUI.warn("Error: " + e.getMessage()));
                     }
                     break;
                 case 2:
@@ -64,23 +58,44 @@ public class TaskManagerApp {
                     System.out.println(ConsoleUI.info("Total tasks: " + taskList.getSize()));
                     break;
                 case 3:
-                    System.out.print("Enter project name to search: ");
-                    String searchName = scanner.nextLine();
+                    String searchName = InputValidator.getValidString(scanner, "Enter project name to search: ", "Project name");
                     Task searchTask = new Task(searchName, "", "", "");
 
                     int index = taskList.search(searchTask);
                     if (index != -1) {
                         System.out.println(ConsoleUI.success("Found at position " + index));
+                        try {
+                            Task found = taskList.getElement(searchTask);
+                            System.out.println(ConsoleUI.info("Task: " + found));
+                        } catch (Exception e) {
+                            System.out.println(ConsoleUI.warn("Error retrieving task details"));
+                        }
                     } else {
                         System.out.println(ConsoleUI.warn("Task not found"));
                     }
                     break;
                 case 4:
-                    System.out.print("Enter project name to delete: ");
-                    String deleteName = scanner.nextLine();
+                    String deleteName = InputValidator.getValidString(scanner, "Enter project name to delete: ", "Project name");
                     Task deleteTask = new Task(deleteName, "", "", "");
-                    if (taskList.delete(deleteTask)) {
-                        System.out.println(ConsoleUI.success("Task deleted successfully"));
+                    
+                    // Show the task before deletion for confirmation
+                    int deleteIndex = taskList.search(deleteTask);
+                    if (deleteIndex != -1) {
+                        try {
+                            Task found = taskList.getElement(deleteTask);
+                            System.out.println(ConsoleUI.info("Found task: " + found));
+                            if (InputValidator.getConfirmation(scanner, "Are you sure you want to delete this task?")) {
+                                if (taskList.delete(deleteTask)) {
+                                    System.out.println(ConsoleUI.success("Task deleted successfully"));
+                                } else {
+                                    System.out.println(ConsoleUI.warn("Failed to delete task"));
+                                }
+                            } else {
+                                System.out.println(ConsoleUI.info("Deletion cancelled"));
+                            }
+                        } catch (Exception e) {
+                            System.out.println(ConsoleUI.warn("Error retrieving task details"));
+                        }
                     } else {
                         System.out.println(ConsoleUI.warn("Task not found"));
                     }
