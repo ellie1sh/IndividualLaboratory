@@ -18,15 +18,15 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         if (head == null) {
 // First node - points to itself
             head = newNode;
-            head.next = head;
-            head.previous = head;
+            head.setNext(head);
+            head.setPrevious(head);
         } else {
 // Insert before head (at the end)
-            DoublyLinkedNode<E> tail = head.previous;
-            newNode.next = head;
-            newNode.previous = tail;
-            tail.next = newNode;
-            head.previous = newNode;
+            DoublyLinkedNode<E> tail = head.getPrevious();
+            newNode.setNext(head);
+            newNode.setPrevious(tail);
+            tail.setNext(newNode);
+            head.setPrevious(newNode);
         }
         size++;
     }
@@ -37,10 +37,10 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         }
         DoublyLinkedNode<E> current = head;
         do {
-            if (current.data.equals(data)) {
-                return current.data;
+            if (current.getData().equals(data)) {
+                return current.getData();
             }
-            current = current.next;
+            current = current.getNext();
         } while (current != head);
         throw new NoSuchElementException("Element not found: " + data);
     }
@@ -52,23 +52,23 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         }
         DoublyLinkedNode<E> current = head;
         do {
-            if (current.data.equals(data)) {
+            if (current.getData().equals(data)) {
 // If it's the only node
-                if (current.next == current) {
+                if (current.getNext() == current) {
                     head = null;
                 } else {
 // Update links
-                    current.previous.next = current.next;
-                    current.next.previous = current.previous;
+                    current.getPrevious().setNext(current.getNext());
+                    current.getNext().setPrevious(current.getPrevious());
 // If we're deleting the head, update head
                     if (current == head) {
-                        head = current.next;
+                        head = current.getNext();
                     }
                 }
                 size--;
                 return true;
             }
-            current = current.next;
+            current = current.getNext();
         } while (current != head);
         return false;
     }
@@ -80,10 +80,10 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         DoublyLinkedNode<E> current = head;
         int index = 0;
         do {
-            if (current.data.equals(data)) {
+            if (current.getData().equals(data)) {
                 return index;
             }
-            current = current.next;
+            current = current.getNext();
             index++;
         } while (current != head);
         return -1;
@@ -97,8 +97,8 @@ public class MyDoublyLinkedCircularList<E> implements MyList<E> {
         System.out.print("List contents: [");
         DoublyLinkedNode<E> current = head;
         do {
-            System.out.print(current.data);
-            current = current.next;
+            System.out.print(current.getData());
+            current = current.getNext();
             if (current != head) System.out.print(", ");
         } while (current != head);
         System.out.println("]");
