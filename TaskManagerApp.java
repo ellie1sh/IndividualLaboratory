@@ -37,20 +37,29 @@ public class TaskManagerApp {
             System.out.println("3. Search Task");
             System.out.println("4. Delete Task");
             System.out.println("5. Exit");
-            System.out.print("Choose option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            int choice = InputUtils.readIntInRange(scanner, "Choose option: ", 1, 5);
             switch (choice) {
                 case 1:
                     try {
-                        System.out.print("Enter project name: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Enter date assigned (MM/DD/YYYY): ");
-                        String assigned = scanner.nextLine();
-                        System.out.print("Enter date submitted (MM/DD/YYYY): ");
-                        String submitted = scanner.nextLine();
-                        System.out.print("Enter status (Completed/Pending): ");
-                        String status = scanner.nextLine();
+                        String name = InputUtils.readNonEmptyString(scanner, "Enter project name: ");
+                        String assigned = InputUtils.readMatchingPattern(
+                                scanner,
+                                "Enter date assigned (MM/DD/YYYY): ",
+                                "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$",
+                                "Please enter a valid date in MM/DD/YYYY format."
+                        );
+                        String submitted = InputUtils.readMatchingPattern(
+                                scanner,
+                                "Enter date submitted (MM/DD/YYYY): ",
+                                "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/\\d{4}$",
+                                "Please enter a valid date in MM/DD/YYYY format."
+                        );
+                        String status = InputUtils.readChoice(
+                                scanner,
+                                "Enter status (Completed/Pending): ",
+                                new String[]{"Completed", "Pending"},
+                                true
+                        );
                         Task task = new Task(name, assigned, submitted, status);
                         taskList.insert(task);
                         System.out.println(ConsoleUI.success("Task added successfully"));
@@ -64,8 +73,7 @@ public class TaskManagerApp {
                     System.out.println(ConsoleUI.info("Total tasks: " + taskList.getSize()));
                     break;
                 case 3:
-                    System.out.print("Enter project name to search: ");
-                    String searchName = scanner.nextLine();
+                    String searchName = InputUtils.readNonEmptyString(scanner, "Enter project name to search: ");
                     Task searchTask = new Task(searchName, "", "", "");
 
                     int index = taskList.search(searchTask);
@@ -76,8 +84,7 @@ public class TaskManagerApp {
                     }
                     break;
                 case 4:
-                    System.out.print("Enter project name to delete: ");
-                    String deleteName = scanner.nextLine();
+                    String deleteName = InputUtils.readNonEmptyString(scanner, "Enter project name to delete: ");
                     Task deleteTask = new Task(deleteName, "", "", "");
                     if (taskList.delete(deleteTask)) {
                         System.out.println(ConsoleUI.success("Task deleted successfully"));
