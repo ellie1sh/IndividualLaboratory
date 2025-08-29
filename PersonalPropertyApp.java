@@ -36,20 +36,14 @@ public class PersonalPropertyApp {
             System.out.println("3. Search Property");
             System.out.println("4. Delete Property");
             System.out.println("5. Exit");
-            System.out.print("Choose option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            int choice = InputUtils.readIntInRange(scanner, "Choose option: ", 1, 5);
             switch (choice) {
                 case 1:
                     try {
-                        System.out.print("Enter property name: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Enter model: ");
-                        String model = scanner.nextLine();
-                        System.out.print("Enter color: ");
-                        String color = scanner.nextLine();
-                        System.out.print("Enter status: ");
-                        String status = scanner.nextLine();
+                        String name = InputUtils.readNonEmptyString(scanner, "Enter property name: ");
+                        String model = InputUtils.readNonEmptyString(scanner, "Enter model: ");
+                        String color = InputUtils.readNonEmptyString(scanner, "Enter color: ");
+                        String status = InputUtils.readNonEmptyString(scanner, "Enter status: ");
                         PersonalProperty property = new PersonalProperty(name, model, color, status);
                         propertyList.insert(property);
                         System.out.println(ConsoleUI.success("Property added successfully"));
@@ -63,10 +57,8 @@ public class PersonalPropertyApp {
                     System.out.println(ConsoleUI.info("Total items: " + propertyList.getSize()));
                     break;
                 case 3:
-                    System.out.print("Enter property name to search: ");
-                    String searchName = scanner.nextLine();
-                    System.out.print("Enter model: ");
-                    String searchModel = scanner.nextLine();
+                    String searchName = InputUtils.readNonEmptyString(scanner, "Enter property name to search: ");
+                    String searchModel = InputUtils.readNonEmptyString(scanner, "Enter model: ");
                     PersonalProperty searchProperty = new PersonalProperty(searchName, searchModel, "", "");
                     int index = propertyList.search(searchProperty);
                     if (index != -1) {
@@ -77,10 +69,8 @@ public class PersonalPropertyApp {
                     break;
                 case 4:
 
-                    System.out.print("Enter property name to delete: ");
-                    String deleteName = scanner.nextLine();
-                    System.out.print("Enter model: ");
-                    String deleteModel = scanner.nextLine();
+                    String deleteName = InputUtils.readNonEmptyString(scanner, "Enter property name to delete: ");
+                    String deleteModel = InputUtils.readNonEmptyString(scanner, "Enter model: ");
                     PersonalProperty deleteProperty = new PersonalProperty(deleteName, deleteModel, "", "");
                     if (propertyList.delete(deleteProperty)) {
                         System.out.println(ConsoleUI.success("Property deleted successfully"));
