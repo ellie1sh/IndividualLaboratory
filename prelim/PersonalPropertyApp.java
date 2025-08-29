@@ -36,20 +36,14 @@ public class PersonalPropertyApp {
             System.out.println("3. Search Property");
             System.out.println("4. Delete Property");
             System.out.println("5. Exit");
-            System.out.print("Choose option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            int choice = InputValidator.getValidMenuChoice(scanner, 1, 5);
             switch (choice) {
                 case 1:
                     try {
-                        System.out.print("Enter property name: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Enter model: ");
-                        String model = scanner.nextLine();
-                        System.out.print("Enter color: ");
-                        String color = scanner.nextLine();
-                        System.out.print("Enter status: ");
-                        String status = scanner.nextLine();
+                        String name = InputValidator.getValidString(scanner, "Enter property name: ", "Property name");
+                        String model = InputValidator.getValidString(scanner, "Enter model: ", "Model");
+                        String color = InputValidator.getValidString(scanner, "Enter color: ", "Color");
+                        String status = InputValidator.getValidPropertyStatus(scanner, "Enter status");
                         PersonalProperty property = new PersonalProperty(name, model, color, status);
                         propertyList.insert(property);
                         System.out.println(ConsoleUI.success("Property added successfully"));
@@ -63,27 +57,45 @@ public class PersonalPropertyApp {
                     System.out.println(ConsoleUI.info("Total items: " + propertyList.getSize()));
                     break;
                 case 3:
-                    System.out.print("Enter property name to search: ");
-                    String searchName = scanner.nextLine();
-                    System.out.print("Enter model: ");
-                    String searchModel = scanner.nextLine();
+                    String searchName = InputValidator.getValidString(scanner, "Enter property name to search: ", "Property name");
+                    String searchModel = InputValidator.getValidString(scanner, "Enter model: ", "Model");
                     PersonalProperty searchProperty = new PersonalProperty(searchName, searchModel, "", "");
                     int index = propertyList.search(searchProperty);
                     if (index != -1) {
                         System.out.println(ConsoleUI.success("Found at position " + index));
+                        try {
+                            PersonalProperty found = propertyList.getElement(searchProperty);
+                            System.out.println(ConsoleUI.info("Property: " + found));
+                        } catch (Exception e) {
+                            System.out.println(ConsoleUI.warn("Error retrieving property details"));
+                        }
                     } else {
                         System.out.println(ConsoleUI.warn("Property not found"));
                     }
                     break;
                 case 4:
-
-                    System.out.print("Enter property name to delete: ");
-                    String deleteName = scanner.nextLine();
-                    System.out.print("Enter model: ");
-                    String deleteModel = scanner.nextLine();
+                    String deleteName = InputValidator.getValidString(scanner, "Enter property name to delete: ", "Property name");
+                    String deleteModel = InputValidator.getValidString(scanner, "Enter model: ", "Model");
                     PersonalProperty deleteProperty = new PersonalProperty(deleteName, deleteModel, "", "");
-                    if (propertyList.delete(deleteProperty)) {
-                        System.out.println(ConsoleUI.success("Property deleted successfully"));
+                    
+                    // Show the property before deletion for confirmation
+                    int deleteIndex = propertyList.search(deleteProperty);
+                    if (deleteIndex != -1) {
+                        try {
+                            PersonalProperty found = propertyList.getElement(deleteProperty);
+                            System.out.println(ConsoleUI.info("Found property: " + found));
+                            if (InputValidator.getConfirmation(scanner, "Are you sure you want to delete this property?")) {
+                                if (propertyList.delete(deleteProperty)) {
+                                    System.out.println(ConsoleUI.success("Property deleted successfully"));
+                                } else {
+                                    System.out.println(ConsoleUI.warn("Failed to delete property"));
+                                }
+                            } else {
+                                System.out.println(ConsoleUI.info("Deletion cancelled"));
+                            }
+                        } catch (Exception e) {
+                            System.out.println(ConsoleUI.warn("Error retrieving property details"));
+                        }
                     } else {
                         System.out.println(ConsoleUI.warn("Property not found"));
                     }
