@@ -19,10 +19,10 @@ public class MySinglyLinkedList<E> implements MyList<E> {
         } else {
 // Insert at the end
             Node<E> current = head;
-            while (current.next != null) {
-                current = current.next;
+            while (current.getNext() != null) {
+                current = current.getNext();
             }
-            current.next = newNode;
+            current.setNext(newNode);
         }
         size++;
     }
@@ -30,10 +30,10 @@ public class MySinglyLinkedList<E> implements MyList<E> {
     public E getElement(E data) throws NoSuchElementException {
         Node<E> current = head;
         while (current != null) {
-            if (current.data.equals(data)) {
-                return current.data;
+            if (current.getData().equals(data)) {
+                return current.getData();
             }
-            current = current.next;
+            current = current.getNext();
         }
         throw new NoSuchElementException("Element not found: " + data);
     }
@@ -44,20 +44,20 @@ public class MySinglyLinkedList<E> implements MyList<E> {
             return false;
         }
 // If head contains the data to delete
-        if (head.data.equals(data)) {
-            head = head.next;
+        if (head.getData().equals(data)) {
+            head = head.getNext();
             size--;
             return true;
         }
 // Search for the node to delete
         Node<E> current = head;
-        while (current.next != null) {
-            if (current.next.data.equals(data)) {
-                current.next = current.next.next;
+        while (current.getNext() != null) {
+            if (current.getNext().getData().equals(data)) {
+                current.setNext(current.getNext().getNext());
                 size--;
                 return true;
             }
-            current = current.next;
+            current = current.getNext();
         }
         return false;
     }
@@ -66,10 +66,10 @@ public class MySinglyLinkedList<E> implements MyList<E> {
         Node<E> current = head;
         int index = 0;
         while (current != null) {
-            if (current.data.equals(data)) {
+            if (current.getData().equals(data)) {
                 return index;
             }
-            current = current.next;
+            current = current.getNext();
             index++;
         }
         return -1;
@@ -78,9 +78,9 @@ public class MySinglyLinkedList<E> implements MyList<E> {
         System.out.print("List contents: [");
         Node<E> current = head;
         while (current != null) {
-            System.out.print(current.data);
-            if (current.next != null) System.out.print(", ");
-            current = current.next;
+            System.out.print(current.getData());
+            if (current.getNext() != null) System.out.print(", ");
+            current = current.getNext();
         }
         System.out.println("]");
     }

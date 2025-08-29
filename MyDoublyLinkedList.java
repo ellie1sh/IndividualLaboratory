@@ -19,8 +19,8 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
         if (head == null) {
             head = tail = newNode;
         } else {
-            tail.next = newNode;
-            newNode.previous = tail;
+            tail.setNext(newNode);
+            newNode.setPrevious(tail);
             tail = newNode;
         }
         size++;
@@ -30,10 +30,10 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
     public E getElement(E data) throws NoSuchElementException {
         DoublyLinkedNode<E> current = head;
         while (current != null) {
-            if (current.data.equals(data)) {
-                return current.data;
+            if (current.getData().equals(data)) {
+                return current.getData();
             }
-            current = current.next;
+            current = current.getNext();
         }
         throw new NoSuchElementException("Element not found: " + data);
     }
@@ -41,30 +41,34 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
     public boolean delete(E data) {
         DoublyLinkedNode<E> current = head;
         while (current != null) {
-            if (current.data.equals(data)) {
+            if (current.getData().equals(data)) {
 // If it's the only node
                 if (current == head && current == tail) {
                     head = tail = null;
                 }
 // If it's the head
                 else if (current == head) {
-                    head = head.next;
-                    head.previous = null;
+                    head = head.getNext();
+                    if (head != null) {
+                        head.setPrevious(null);
+                    }
                 }
 // If it's the tail
                 else if (current == tail) {
-                    tail = tail.previous;
-                    tail.next = null;
+                    tail = tail.getPrevious();
+                    if (tail != null) {
+                        tail.setNext(null);
+                    }
                 }
 // If it's a middle node
                 else {
-                    current.previous.next = current.next;
-                    current.next.previous = current.previous;
+                    current.getPrevious().setNext(current.getNext());
+                    current.getNext().setPrevious(current.getPrevious());
                 }
                 size--;
                 return true;
             }
-            current = current.next;
+            current = current.getNext();
         }
         return false;
     }
@@ -73,11 +77,10 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
         DoublyLinkedNode<E> current = head;
         int index = 0;
         while (current != null) {
-            if (current.data.equals(data)) {
+            if (current.getData().equals(data)) {
                 return index;
             }
-            current = current.next;
-
+            current = current.getNext();
             index++;
         }
         return -1;
@@ -86,9 +89,9 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
         System.out.print("List contents: [");
         DoublyLinkedNode<E> current = head;
         while (current != null) {
-            System.out.print(current.data);
-            if (current.next != null) System.out.print(", ");
-            current = current.next;
+            System.out.print(current.getData());
+            if (current.getNext() != null) System.out.print(", ");
+            current = current.getNext();
         }
         System.out.println("]");
     }
