@@ -12,7 +12,7 @@ public class MySinglyLinkedList<E> implements MyList<E> {
         return size;
     }
     @Override
-    public void insert(E data) throws ListOverflowException {
+    public void insert(E data) {
         Node<E> newNode = new Node<>(data);
         if (head == null) {
             head = newNode;
@@ -75,13 +75,20 @@ public class MySinglyLinkedList<E> implements MyList<E> {
         return -1;
     }
     public void display() {
-        System.out.print("List contents: [");
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
         Node<E> current = head;
         while (current != null) {
-            System.out.print(current.getData());
-            if (current.getNext() != null) System.out.print(", ");
+            sb.append(current.getData());
+            if (current.getNext() != null) sb.append(", ");
             current = current.getNext();
         }
-        System.out.println("]");
+        sb.append("]");
+        return sb.toString();
     }
 }

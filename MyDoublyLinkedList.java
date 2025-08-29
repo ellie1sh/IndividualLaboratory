@@ -14,7 +14,7 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
         return size;
     }
     @Override
-    public void insert(E data) throws ListOverflowException {
+    public void insert(E data) {
         DoublyLinkedNode<E> newNode = new DoublyLinkedNode<>(data);
         if (head == null) {
             head = tail = newNode;
@@ -86,13 +86,20 @@ public class MyDoublyLinkedList<E> implements MyList<E> {
         return -1;
     }
     public void display() {
-        System.out.print("List contents: [");
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
         DoublyLinkedNode<E> current = head;
         while (current != null) {
-            System.out.print(current.getData());
-            if (current.getNext() != null) System.out.print(", ");
+            sb.append(current.getData());
+            if (current.getNext() != null) sb.append(", ");
             current = current.getNext();
         }
-        System.out.println("]");
+        sb.append("]");
+        return sb.toString();
     }
 }

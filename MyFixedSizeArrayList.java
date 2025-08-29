@@ -56,12 +56,18 @@ public class MyFixedSizeArrayList<E> implements MyList<E> {
     }
     // Helper method to display all elements
     public void display() {
-        System.out.print("List contents: [");
-        for (int i = 0; i < size; i++) {
-            System.out.print(array[i]);
-            if (i < size - 1) System.out.print(", ");
-        }
+        System.out.println(toString());
+    }
 
-        System.out.println("]");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
+        for (int i = 0; i < size; i++) {
+            sb.append(array[i]);
+            if (i < size - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

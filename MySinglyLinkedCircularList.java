@@ -12,7 +12,7 @@ public class MySinglyLinkedCircularList<E> implements MyList<E> {
         return size;
     }
     @Override
-    public void insert(E data) throws ListOverflowException {
+    public void insert(E data) {
         Node<E> newNode = new Node<>(data);
         if (tail == null) {
 // First node - points to itself
@@ -92,17 +92,23 @@ public class MySinglyLinkedCircularList<E> implements MyList<E> {
         return -1;
     }
     public void display() {
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
         if (tail == null) {
-            System.out.println("List contents: []");
-            return;
+            return "List contents: []";
         }
-        System.out.print("List contents: [");
-        Node<E> current = tail.getNext(); // Start from head
+        StringBuilder sb = new StringBuilder();
+        sb.append("List contents: [");
+        Node<E> current = tail.getNext();
         do {
-            System.out.print(current.getData());
+            sb.append(current.getData());
             current = current.getNext();
-            if (current != tail.getNext()) System.out.print(", ");
+            if (current != tail.getNext()) sb.append(", ");
         } while (current != tail.getNext());
-        System.out.println("]");
+        sb.append("]");
+        return sb.toString();
     }
 }

@@ -29,8 +29,8 @@ public class TaskManagerApp {
     public static void main(String[] args) {
         MyGrowingArrayList<Task> taskList = new MyGrowingArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Course Task Manager ===");
-        System.out.println("(Growing array list - starts with 5, doubles when full)");
+        System.out.println(ConsoleUI.title("Course Task Manager"));
+        System.out.println(ConsoleUI.info("Growing array list - starts at 5, doubles when full"));
         while (true) {
             System.out.println("\n1. Add Task");
             System.out.println("2. View All Tasks");
@@ -53,15 +53,15 @@ public class TaskManagerApp {
                         String status = scanner.nextLine();
                         Task task = new Task(name, assigned, submitted, status);
                         taskList.insert(task);
-                        System.out.println("Task added successfully!");
+                        System.out.println(ConsoleUI.success("Task added successfully"));
                     } catch (ListOverflowException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                     break;
                 case 2:
-                    System.out.println("\nYour Tasks:");
-                    taskList.display();
-                    System.out.println("Total tasks: " + taskList.getSize());
+                    System.out.println(ConsoleUI.section("Your Tasks"));
+                    System.out.println(taskList.toString());
+                    System.out.println(ConsoleUI.info("Total tasks: " + taskList.getSize()));
                     break;
                 case 3:
                     System.out.print("Enter project name to search: ");
@@ -70,9 +70,9 @@ public class TaskManagerApp {
 
                     int index = taskList.search(searchTask);
                     if (index != -1) {
-                        System.out.println("Found at position " + index);
+                        System.out.println(ConsoleUI.success("Found at position " + index));
                     } else {
-                        System.out.println("Task not found.");
+                        System.out.println(ConsoleUI.warn("Task not found"));
                     }
                     break;
                 case 4:
@@ -80,17 +80,17 @@ public class TaskManagerApp {
                     String deleteName = scanner.nextLine();
                     Task deleteTask = new Task(deleteName, "", "", "");
                     if (taskList.delete(deleteTask)) {
-                        System.out.println("Task deleted successfully!");
+                        System.out.println(ConsoleUI.success("Task deleted successfully"));
                     } else {
-                        System.out.println("Task not found.");
+                        System.out.println(ConsoleUI.warn("Task not found"));
                     }
                     break;
                 case 5:
-                    System.out.println("Goodbye!");
+                    System.out.println(ConsoleUI.info("Goodbye!"));
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid option!");
+                    System.out.println(ConsoleUI.warn("Invalid option"));
             }
         }
     }
